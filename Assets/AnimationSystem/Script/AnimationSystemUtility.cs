@@ -8,10 +8,11 @@ namespace AnimationSystem
     public class AnimationSystemUtility
     {
         Animator animator;
-        AnimationType type;
-        public AnimationSystemUtility(AnimationType type)
+        AnimationData data;
+        public AnimationSystemUtility(AnimationData type)
         {
-            this.type = type;
+            this.data = type;
+
             if (type.animations == null || type.BaseModel == null)
             {
                 Debug.LogError($"Something In AnimationType {type.name} Is Null");
@@ -23,13 +24,19 @@ namespace AnimationSystem
 
         public void StartAnimation(int index)
         {
-            if (type.animations[index] == null)
+            if (animator == null)
             {
-                Debug.LogError($"Animation Clip In AnimationType {type.name} Is Null");
+                Debug.LogError("Animator Is Null");
                 return;
             }
 
-            string animationClipName = type.animations[index].name;
+            if (data.animations.Count >= index || data.animations[index] == null)
+            {
+                Debug.LogError($"No Such A Animation Exist Index:{index}");
+                return;
+            }
+
+            string animationClipName = data.animations[index].name;
             animator.Play(animationClipName);
         }
     }
