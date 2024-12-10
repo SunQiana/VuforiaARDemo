@@ -7,6 +7,8 @@ namespace AnimationSystem
 {
     public class AnimationSystemUtility
     {
+        const int BASE_MODEL_SCALE = 300;
+
         Animation animationPlayer;
         Dictionary<AnimationKey, AnimationClip> animations = new();
 
@@ -42,7 +44,10 @@ namespace AnimationSystem
                 return null;
             }
 
-            return GameObject.Instantiate(data.BaseModel);
+            var result = GameObject.Instantiate(data.BaseModel);
+            result.transform.localScale = new Vector3(BASE_MODEL_SCALE, BASE_MODEL_SCALE, BASE_MODEL_SCALE);
+
+            return result;
         }
 
         void LoadAnimations(GameObject target)
