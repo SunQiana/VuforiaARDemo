@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb144f49496e324458184bf26fe168db, type: 3}
+  m_Name: UI_RefrenceProvidor
+  m_EditorClassIdentifier: 
+  RootCanvas: {fileID: 2382030513037817719, guid: 149fb2ce830cf4444a407e79386d8ab2, type: 3}
+  buttonReferences:
+  - button: {fileID: 1038381152682335234, guid: c0c02034928011244afdbb8ee57f1d10, type: 3}
+    key: 0
+  - button: {fileID: 4859578184904102234, guid: 78e6df72cdea20847ae7ccb32bd68b38, type: 3}
+    key: 1
+  - button: {fileID: 9201659208328768372, guid: 946449d24c0779646a328b1ee5939d72, type: 3}
+    key: 2
+  - button: {fileID: 6881359221769190967, guid: 9c9a872029d510b47867041859f1e0aa, type: 3}
+    key: 3

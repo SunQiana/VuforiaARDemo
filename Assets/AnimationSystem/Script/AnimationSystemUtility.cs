@@ -7,37 +7,90 @@ namespace AnimationSystem
 {
     public class AnimationSystemUtility
     {
-        Animator animator;
-        AnimationData data;
-        public AnimationSystemUtility(AnimationData type)
+        Animation animationPlayer;
+        Dictionary<AnimationKey, AnimationClip> animations = new();
+
+        public AnimationSystemUtility(AnimationDatas data)
         {
-            this.data = type;
+            LoadFromDatas(data);
 
-            if (type.animations == null || type.BaseModel == null)
-            {
-                Debug.LogError($"Something In AnimationType {type.name} Is Null");
-            }
+            var target = SetTarget(data);
+            LoadAnimations(target);
 
-            var animationTarget = GameObject.Instantiate(type.BaseModel);
-            animator = animationTarget.AddComponent<Animator>();
+            SetEnable(false);
         }
 
-        public void StartAnimation(int index)
+        void LoadFromDatas(AnimationDatas data)
         {
-            if (animator == null)
+            if (data == null)
             {
-                Debug.LogError("Animator Is Null");
+                Debug.LogError("Failed To Load Animation Data");
                 return;
             }
 
-            if (data.animations.Count >= index || data.animations[index] == null)
+            foreach (var item in data.Animations)
             {
-                Debug.LogError($"No Such A Animation Exist Index:{index}");
+                animations.Add(item.key, item.animation);
+            }
+        }
+
+        GameObject SetTarget(AnimationDatas data)
+        {
+            if (data.BaseModel == null)
+            {
+                Debug.LogError("Base Model Is Null");
+                return null;
+            }
+
+            return GameObject.Instantiate(data.BaseModel);
+        }
+
+        void LoadAnimations(GameObject target)
+        {
+            if (target.TryGetComponent<Animation>(out animationPlayer) == false)
+            {
+                animationPlayer = target.AddComponent<Animation>();
+            }
+
+            foreach (var item in animations)
+            {
+                AnimationKey key = item.Key;
+                AnimationClip clip = item.Value;
+                clip.wrapMode = WrapMode.Loop;
+
+                animationPlayer.AddClip(clip, clip.name);
+            }
+        }
+
+        public void StartAnimation(AnimationKey key)
+        {
+            if (animationPlayer == null)
+            {
+                Debug.LogError("Animation Component Is Null");
                 return;
             }
 
-            string animationClipName = data.animations[index].name;
-            animator.Play(animationClipName);
+            if (animationPlayer.gameObject.activeInHierarchy == false)
+            {
+                Debug.LogWarning("Base Model is not active, Start Animation has been returned");
+                return;
+            }
+
+            animationPlayer.clip = animations[key];
+            animationPlayer.Play();
         }
+
+        public void SetEnable(bool condition)
+        {
+            animationPlayer.gameObject.SetActive(condition);
+        }
+    }
+
+    public enum AnimationKey
+    {
+        ResetAction,
+        Action1,
+        Action2,
+        Action3,
     }
 }
